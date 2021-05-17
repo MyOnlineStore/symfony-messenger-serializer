@@ -1,0 +1,10 @@
+.DS_Store
+/.idea
+/composer.lock
+/vendor
+
+/phpcs.xml
+/.phpcs-cache
+/phpunit.xml
+/.phpunit.result.cache
+/psalm.xml

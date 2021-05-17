@@ -1,0 +1,31 @@
+{
+    "name": "myonlinestore/symfony-messenger-serializer",
+    "type": "library",
+    "description": "Generic Symfony Messenger Serializer",
+    "homepage": "https://github.com/MyOnlineStore/symfony-messenger-serializer",
+    "license": "MIT",
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "MyOnlineStore\\Symfony\\Messenger\\Serializer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MyOnlineStore\\Symfony\\Messenger\\Serializer\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.2|^8.0",
+        "symfony/messenger": "^4.4|^5.2",
+        "symfony/serializer": "^4.4|^5.2",
+        "webmozart/assert": "^1.10"
+    },
+    "require-dev": {
+        "myonlinestore/coding-standard": "^3.1",
+        "phpunit/phpunit": "^8.5|^9.5",
+        "vimeo/psalm": "^4.7"
+    }
+}
