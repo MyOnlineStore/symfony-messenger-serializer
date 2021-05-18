@@ -79,7 +79,26 @@ final class KafkaMessageSerializerTest extends TestCase
         );
     }
 
-    public function testDecodeReturnsUnmappedMessage(): void
+    public function testDecodeReturnsUnmappedMessageIfNoNameAvailable(): void
+    {
+        $this->messageNameMapper->expects(self::never())
+            ->method('getMessageFromName');
+
+        self::assertEquals(
+            new Envelope(new UnmappedMessage('foo', ['foo' => 'bar'], '{"normalized-message"}')),
+            $this->serializer->decode(
+                [
+                    'key' => 'foo',
+                    'headers' => [
+                        'foo' => 'bar',
+                    ],
+                    'body' => '{"normalized-message"}',
+                ]
+            )
+        );
+    }
+
+    public function testDecodeReturnsUnmappedMessageIfNotMapped(): void
     {
         $messageName = MessageName::fromString('foo.v1');
 
