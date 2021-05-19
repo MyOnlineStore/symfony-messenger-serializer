@@ -50,7 +50,6 @@ final class KafkaMessageSerializer implements SerializerInterface
      * @param array<array-key, mixed> $encodedEnvelope
      *
      * @throws ExceptionInterface
-     * @throws \InvalidArgumentException
      */
     public function decode(array $encodedEnvelope): Envelope
     {
@@ -58,14 +57,12 @@ final class KafkaMessageSerializer implements SerializerInterface
         \assert(\is_string($encodedEnvelope['key']));
         \assert(\array_key_exists('headers', $encodedEnvelope));
         \assert(\is_array($encodedEnvelope['headers']));
-        \assert(\array_key_exists('name', $encodedEnvelope['headers']));
-        \assert(\is_string($encodedEnvelope['headers']['name']));
         \assert(\array_key_exists('body', $encodedEnvelope));
         \assert(\is_string($encodedEnvelope['body']));
 
-        $messageName = MessageName::fromString($encodedEnvelope['headers']['name']);
-
         try {
+            $messageName = MessageName::fromString((string) ($encodedEnvelope['headers']['name'] ?? ''));
+
             $message = $this->denormalizer->denormalize(
                 $this->decoder->decode($encodedEnvelope['body'], 'json'),
                 $this->messageNameMapper->getMessageFromName($messageName),
@@ -73,7 +70,7 @@ final class KafkaMessageSerializer implements SerializerInterface
             );
 
             \assert($message instanceof KafkaMessage);
-        } catch (MessageNameMappingFailed $exception) {
+        } catch (\InvalidArgumentException | MessageNameMappingFailed $exception) {
             /** @psalm-suppress MixedArgumentTypeCoercion */
             $message = new UnmappedMessage(
                 $encodedEnvelope['key'],
