@@ -63,7 +63,7 @@ final class KafkaMessageSerializerTest extends TestCase
         $this->denormalizer->expects(self::once())
             ->method('denormalize')
             ->with(['normalized-message'], \stdClass::class, 'foo.v1')
-            ->willReturn($message = $this->createMock(KafkaMessage::class));
+            ->willReturn($message = new \stdClass());
 
         self::assertEquals(
             new Envelope($message),
