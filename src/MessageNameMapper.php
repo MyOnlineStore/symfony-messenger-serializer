@@ -9,7 +9,7 @@ interface MessageNameMapper
      * Get the FQCN that represents the given MessageName. If given MessageName
      * was not found, a MessageNameMappingFailed must be thrown.
      *
-     * @return class-string<KafkaMessage>
+     * @return class-string
      *
      * @throws MessageNameMappingFailed
      *

@@ -69,7 +69,7 @@ final class KafkaMessageSerializer implements SerializerInterface
                 $messageName->toString()
             );
 
-            \assert($message instanceof KafkaMessage);
+            \assert(\is_object($message));
         } catch (\InvalidArgumentException | MessageNameMappingFailed $exception) {
             /** @psalm-suppress MixedArgumentTypeCoercion */
             $message = new UnmappedMessage(
