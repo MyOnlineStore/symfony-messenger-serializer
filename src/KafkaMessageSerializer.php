@@ -105,6 +105,9 @@ final class KafkaMessageSerializer implements SerializerInterface
                 $this->normalizer->normalize($message, $messageName),
                 'json'
             ),
+            'timestamp_ms' => $message instanceof TimestampAwareMessage ?
+                $message->getTimestamp() :
+                null,
         ];
     }
 }

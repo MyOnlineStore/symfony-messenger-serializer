@@ -27,5 +27,8 @@
         "myonlinestore/coding-standard": "^3.1",
         "phpunit/phpunit": "^8.5|^9.5",
         "vimeo/psalm": "^4.7"
+    },
+    "suggest": {
+        "koco/messenger-kafka": "^0.14; Symfony Messenger Kafka adapter"
     }
 }
