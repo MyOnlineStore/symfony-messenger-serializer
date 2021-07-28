@@ -8,6 +8,7 @@ use MyOnlineStore\Symfony\Messenger\Serializer\KafkaMessageSerializer;
 use MyOnlineStore\Symfony\Messenger\Serializer\MessageName;
 use MyOnlineStore\Symfony\Messenger\Serializer\MessageNameMapper;
 use MyOnlineStore\Symfony\Messenger\Serializer\MessageNameMappingFailed;
+use MyOnlineStore\Symfony\Messenger\Serializer\TimestampAwareMessage;
 use MyOnlineStore\Symfony\Messenger\Serializer\UnmappedMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -151,6 +152,47 @@ final class KafkaMessageSerializerTest extends TestCase
                     'name' => 'foo.v1',
                 ],
                 'body' => '{"normalized-message"}',
+                'timestamp_ms' => null,
+            ],
+            $this->serializer->encode(new Envelope($message))
+        );
+    }
+
+    public function testEncodeWithTimestamp(): void
+    {
+        $message = $this->createMock(TimestampAwareMessage::class);
+
+        $message->expects(self::once())
+            ->method('getKey')
+            ->willReturn('foo');
+
+        $message->expects(self::once())
+            ->method('getTimestamp')
+            ->willReturn(8765);
+
+        $this->messageNameMapper->expects(self::once())
+            ->method('getNameFromMessage')
+            ->with(\get_class($message))
+            ->willReturn(MessageName::fromString('foo.v1'));
+
+        $this->normalizer->expects(self::once())
+            ->method('normalize')
+            ->with($message, 'foo.v1')
+            ->willReturn(['normalized-message']);
+
+        $this->encoder->expects(self::once())
+            ->method('encode')
+            ->with(['normalized-message'], 'json')
+            ->willReturn('{"normalized-message"}');
+
+        self::assertEquals(
+            [
+                'key' => 'foo',
+                'headers' => [
+                    'name' => 'foo.v1',
+                ],
+                'body' => '{"normalized-message"}',
+                'timestamp_ms' => 8765,
             ],
             $this->serializer->encode(new Envelope($message))
         );
