@@ -8,14 +8,10 @@ namespace MyOnlineStore\Symfony\Messenger\Serializer;
  */
 final class UnmappedMessage
 {
-    /** @var string */
-    public $key;
-
+    public string $key;
     /** @var array<string, string> */
-    public $headers;
-
-    /** @var string */
-    public $body;
+    public array $headers;
+    public string $body;
 
     /**
      * @param array<string, string> $headers

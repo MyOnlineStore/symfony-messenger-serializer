@@ -10,11 +10,8 @@ use Webmozart\Assert\Assert;
  */
 final class MessageName
 {
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $version;
+    private string $name;
+    private string $version;
 
     private function __construct(string $name, string $version)
     {

@@ -5,7 +5,10 @@
     "homepage": "https://github.com/MyOnlineStore/symfony-messenger-serializer",
     "license": "MIT",
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -18,15 +21,17 @@
         }
     },
     "require": {
-        "php": "^7.2|^8.0",
-        "symfony/messenger": "^4.4|^5.2",
-        "symfony/serializer": "^4.4|^5.2",
+        "php": "^7.4|^8.0",
+        "ext-json": "*",
+        "symfony/messenger": "^5.4",
+        "symfony/serializer": "^5.4",
         "webmozart/assert": "^1.10"
     },
     "require-dev": {
         "myonlinestore/coding-standard": "^3.1",
-        "phpunit/phpunit": "^8.5|^9.5",
-        "vimeo/psalm": "^4.7"
+        "myonlinestore/php-devtools": "^0.2.0",
+        "phpunit/phpunit": "^9.5",
+        "vimeo/psalm": "^4.22"
     },
     "suggest": {
         "koco/messenger-kafka": "^0.14; Symfony Messenger Kafka adapter"

@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -142,7 +143,7 @@ final class KafkaMessageSerializerTest extends TestCase
 
         $this->encoder->expects(self::once())
             ->method('encode')
-            ->with(['normalized-message'], 'json')
+            ->with(['normalized-message'], 'json', [JsonEncode::OPTIONS => \JSON_UNESCAPED_SLASHES])
             ->willReturn('{"normalized-message"}');
 
         self::assertEquals(
@@ -182,7 +183,7 @@ final class KafkaMessageSerializerTest extends TestCase
 
         $this->encoder->expects(self::once())
             ->method('encode')
-            ->with(['normalized-message'], 'json')
+            ->with(['normalized-message'], 'json', [JsonEncode::OPTIONS => \JSON_UNESCAPED_SLASHES])
             ->willReturn('{"normalized-message"}');
 
         self::assertEquals(

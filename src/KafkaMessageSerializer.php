@@ -7,26 +7,18 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class KafkaMessageSerializer implements SerializerInterface
 {
-    /** @var DecoderInterface */
-    private $decoder;
-
-    /** @var DenormalizerInterface */
-    private $denormalizer;
-
-    /** @var EncoderInterface */
-    private $encoder;
-
-    /** @var MessageNameMapper */
-    private $messageNameMapper;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private DecoderInterface $decoder;
+    private DenormalizerInterface $denormalizer;
+    private EncoderInterface $encoder;
+    private MessageNameMapper $messageNameMapper;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         DecoderInterface $decoder,
@@ -103,7 +95,10 @@ final class KafkaMessageSerializer implements SerializerInterface
             ],
             'body' => $this->encoder->encode(
                 $this->normalizer->normalize($message, $messageName),
-                'json'
+                'json',
+                [
+                    JsonEncode::OPTIONS =>  \JSON_UNESCAPED_SLASHES,
+                ]
             ),
             'timestamp_ms' => $message instanceof TimestampAwareMessage ?
                 $message->getTimestamp() :
